@@ -40,7 +40,21 @@ Visit any supported Flash site (such as [h-flash.com](https://h-flash.com)), cli
 ---
 
 ## Troubleshooting
+## Building from Source
 
+If you prefer compiling the universal binary and assembling the application bundle yourself rather than downloading the pre-built `.dmg`, follow these steps.
+
+### Prerequisites
+- macOS 11.0 (Big Sur) or later
+- Xcode Command Line Tools installed (`xcode-select --install`)
+- Standalone [Ruffle](https://ruffle.rs/) binary or desktop app installed
+
+### Build Steps
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/nightc00re/HFlashPlayer_Mac.git](https://github.com/nightc00re/HFlashPlayer_Mac.git)
+   cd HFlashPlayer_Mac/MacOS
 - **Nothing happens when clicking "CLICK TO PLAY":**
   Make sure you opened `HFlashPlayer.app` at least once from `/Applications` so macOS LaunchServices can associate `hflash://` with the app. You can also re-register manually in Terminal:
   ```bash
