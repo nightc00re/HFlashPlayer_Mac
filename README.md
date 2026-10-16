@@ -1,52 +1,47 @@
-# HFlashPlayer
+# HFlashPlayer (macOS Port)
 
-A handler for automatically launch offline Flash player from a custom scheme url
+A native macOS handler to automatically launch Flash content in standalone Ruffle from custom `hflash://` scheme URLs.
 
+This repository is a native macOS port of [h-flash/HFlashPlayer](https://github.com/h-flash/HFlashPlayer), replacing the legacy Windows Forms/.NET launcher with a lightweight, universal Cocoa application.
 
-## How to use:
+---
 
-* this tool is only deployed on __!nsfw!__ https://h-flash.com currently.
+## Features
+- **Universal Binary:** Native support for both Apple Silicon (M1/M2/M3/M4) and Intel Macs.
+- **Embedded Ruffle Engine:** No external dependencies or Homebrew prerequisites required.
+- **Protocol Integration:** Registers `hflash://` seamlessly with macOS LaunchServices.
 
-1. download this tool from release.
-2. extract it to any location you want.
-3. run HFlashPlayer.exe one time, accept user admin control pop out to update registry.
-4. open a flash page on h-flash, click the "CLICK TO PLAY" link.
+---
 
-## How to use on all sites:
+## Quick Start (macOS)
 
-* we need a user script to add buttons on flash plugin objects.
+### 1. Install the Application
+1. Download **`HFlashPlayer-macOS-Universal.dmg`** from the [Latest Release](https://github.com/nightc00re/HFlashPlayer_Mac/releases).
+2. Open the `.dmg` and drag `HFlashPlayer.app` into `/Applications`.
+3. Open `HFlashPlayer.app` once from Launchpad or Finder to allow macOS to register the protocol handler (you can close it right after).
 
-1. install user script browser extension Tampermonkey.  
-   chrome: https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo  
-   firefox: https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/   
-2. click Tampermonkey icon -> Dashboard -> Utilities -> Install from URL, copy and paste this url to install: https://raw.githubusercontent.com/h-flash/HFlashPlayer/main/ScriptInjector.user.js
+### 2. Install the Browser Userscript
+The userscript detects Flash elements on web pages and converts them into clickable `hflash://` links.
 
-## How to use for webmaster:
+1. Install a userscript manager in your browser:
+   - [Tampermonkey for Chrome](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
+   - [Tampermonkey for Firefox](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/)
+2. Install the script:
+   - Click the Tampermonkey extension icon $\rightarrow$ **Dashboard** $\rightarrow$ **Utilities**.
+   - Under **Install from URL**, paste:
+     ```text
+     [https://raw.githubusercontent.com/nightc00re/HFlashPlayer_Mac/main/ScriptInjector.user.js](https://raw.githubusercontent.com/nightc00re/HFlashPlayer_Mac/main/ScriptInjector.user.js)
+     ```
+   - Click **Install**.
 
-1. (optional) Edit Scheme property in Form1.cs for your custom scheme, then rebuild.
-2. Combine scheme header with base64 encoded swf full path  as a launch url.
-example: var url = "hflash://" + base64encode("http://yoursite.com/"+swfpath);
+### 3. Play
+Visit any supported Flash site (such as [h-flash.com](https://h-flash.com)), click **"CLICK TO PLAY"**, and allow Chrome to open `HFlashPlayer`. The game will launch directly in an accelerated native Ruffle window.
 
-hints for webmaster:
-* swfpath need not urlencode.
-* modern browsers has built in base64encode function, just: btoa(swfpath) .
-* if you open the launch url in a new window, it will leave a blank window, if not, the web page will stop functioning after launch. h-flash's solution: open in a hidden iframe.
+---
 
-## Issue self check list:
-<pre>
-When you click a "CLICK TO PLAY" or "HFlashPlayer" button:
-Q1. nothing happened.
-	A11. your HFlashPlayer was not registered correctly. please run HFlashPlayer.exe to register.
-		Q111. nothing happens when I run HFlashPlayer.exe
-			A111. you need .net framework 4.0 to run this program.
-	A12. your web browser or antivirus blocked the request, check your browser's application setting or try in another web browser.
+## Troubleshooting
 
-Q2. a blank window and it's keeps blank forever.
-	A21. click file menu, you will see a url on position 1, carefully type and open it in your web browser to test the file is reachable.
-		Q211. I saw a browser check or a captcha, or I saw the check a while ago.
-			A211: your network was marked as unsafe by the firewall, you need to download and play offline, or use a proxy.
-		Q212. I can download the file but I'm using a proxy.
-			A212: you need to proxy the flashplayer.exe also.                                   
-</pre>
-
-if your situation not in the list please submit a new issue.
+- **Nothing happens when clicking "CLICK TO PLAY":**
+  Make sure you opened `HFlashPlayer.app` at least once from `/Applications` so macOS LaunchServices can associate `hflash://` with the app. You can also re-register manually in Terminal:
+  ```bash
+  /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f /Applications/HFlashPlayer.app
